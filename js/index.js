@@ -162,18 +162,53 @@ function closeNav() {
 
 
 
+var search = document.getElementById("case-search-input");
+search.addEventListener("keyup", function(event) {
+  event.preventDefault();
+  if (event.keyCode === 13){
+    searchCases();
+  }
+});
 
 function searchCases(){
   var foundCases = [];
-  var locality = document.getElementById("case-search-input").value;
-  if(locality){
+  var input = document.getElementById("case-search-input").value;
+  if(input){
     covid_cases.forEach(function(covid_case){
-      var local = covid_case.Localidad.substring(0,5);
-      if (local == locality){
+      var id = covid_case.ID;
+      var locality = covid_case.Localidad;
+      var date = covid_case.Fecha;
+      var age = covid_case.Edad
+      var gender = covid_case.Género;
+      var cause = covid_case.Causa;
+      var place = covid_case.Lugar;
+      var state = covid_case["Estado actual"];
+      var day = covid_case.Día;
+      var month = covid_case.Mes;
+      var year = covid_case.Año;
+      var now = new Date();
+      var case_date = new Date(year, month-1, day);
+      const days_ago = parseInt((now - case_date) / (1000 * 60 * 60 * 24), 10);
+      var days_ago_text = days_ago.toString() + (days_ago == 1 ? ' día' : ' días');
+      var weekday = capitalizeFirstLetter(case_date.toLocaleDateString('es-co',{ weekday: 'long'}));      
+      if (id.indexOf(input) > -1 ||
+          locality.indexOf(input) > -1 ||
+          age.indexOf(input) > -1 ||
+          gender.indexOf(input) > -1 ||
+          cause.indexOf(input) > -1 ||
+          place.indexOf(input) > -1 ||
+          state.indexOf(input) > -1 ||
+          date.indexOf(input) > -1 ||
+          days_ago_text.indexOf(input) > -1 ||
+          weekday.indexOf(input) > -1 )
+      {
         foundCases.push(covid_case);
       }
     });
   } else {
+    foundCases = covid_cases;
+  }
+  if (!Array.isArray(foundCases) || !foundCases.length) {
     foundCases = covid_cases;
   }
   clearLocations();
@@ -249,7 +284,7 @@ function displayCases(covid_cases) {
       }
       var weekday = capitalizeFirstLetter(case_date.toLocaleDateString('es-co',{ weekday: 'long'}));      
       covidcasesHtml += `
-        <div class="case-container">
+        <div id="case-container" class="case-container">
           <div class="case-container-background">
             <div class="case-id-days">
               <div class="case-id">
@@ -315,19 +350,6 @@ function displayCases(covid_cases) {
   });
 }
 
-// function showLocalitiesMarkers(){
-//   var bounds = new google.maps.LatLngBounds();
-//   localities.forEach(function(locality){
-//     var latlng = new google.maps.LatLng(
-//       lat = locality.Latitud,
-//       lng = locality.Longitud);
-//     var name = locality.Localidad;
-//     bounds.extend(latlng);
-//     createMarker(latlng, name)
-//     console.log(locality);
-//   })
-//   map.fitBounds(bounds);
-// }
 
 function showLocalitiesMarkers(covid_cases){
   var bounds = new google.maps.LatLngBounds();
