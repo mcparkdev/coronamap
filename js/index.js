@@ -350,7 +350,6 @@ function displayCases(covid_cases) {
   });
 }
 
-
 function showLocalitiesMarkers(covid_cases){
   var bounds = new google.maps.LatLngBounds();
   covid_cases.forEach(function(covid_case, index){
@@ -401,7 +400,7 @@ function createMarker(latlng, id, name, weekday, day, month, year, place, age, i
   var marker = new google.maps.Marker({
     map: map,
     position: latlng,
-    label: `${index+1}`
+    // label: `${index+1}`
   });
   google.maps.event.addListener(marker, 'click', function() {
     infoWindow.setContent(html);
