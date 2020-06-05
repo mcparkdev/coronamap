@@ -5,16 +5,19 @@
     <link rel="stylesheet" href="style/style.css">
     <script src='https://kit.fontawesome.com/c939d0e917.js'></script>
     <script src='js/COVID-data.js'></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src='js/locality-data.js'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
     <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
   </head>
   <body>
-    <div class="sidebar">
+    <div id ="mySidebar" class="sidebar" style="left: 0px;">
         <div class="title">Casos Confirmados COVID-19</div>
         <div class="search-container">
             <div class="search">
-                <i class="fas fa-search"></i>
-                <input type='text' placeholder='Buscar por localidad'/>
+                <i class="fas fa-search" onclick="searchCases()"></i>
+                <input id="case-search-input" type='text' placeholder='Buscar por localidad'/>
             </div>
         </div>
         <div class="update-filter-container">
@@ -28,8 +31,25 @@
         <div class="cases-list-container">
         </div>
     </div>
-    <div id="map"></div>
+    <div id="main" style="margin-left: 370px;">
+      <button class="togglebtn" onclick="actionNav()">
+        <i class="fas fa-chevron-left"></i>
+        <script>
+          document.querySelector('button').addEventListener('click', function() {
+            const icon = this.querySelector('i');
+            if (icon.classList.contains('fa-chevron-right')) {
+              icon.classList.remove('fa-chevron-right');
+              icon.classList.add('fa-chevron-left');
+            } else {
+              icon.classList.remove('fa-chevron-left');
+              icon.classList.add('fa-chevron-right');
+            }
+          })
+        </script>
+      </button>
+      <div id="map"></div>
+    </div>
     <script src='js/index.js'></script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-f1XAWY-mcjlVfW22dHoVZJz6o7F42sA&callback=initMap"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyB-f1XAWY-mcjlVfW22dHoVZJz6o7F42sA&callback=initMap"></script>
   </body>
 </html>
